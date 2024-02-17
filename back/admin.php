@@ -1,36 +1,73 @@
-<div class="ct"><button onclick="location.href='?do=add_admin'">新增管理員</button></div>
-<!-- table.all>tr>td.ct.tt*3+tr>td.ct.pp*3 -->
 <?php
-$rows = $Admin->all();
+$accs = $Admin->all();
 ?>
+<h1>admin</h1>
+<div class="ct"><input type="button" value="新增管理員" id="addAdmin"></div>
 <table class="all">
     <tr>
-        <th class="ct tt">帳號</th>
-        <th class="ct tt">密碼</th>
-        <th class="ct tt">管理</th>
+        <td class="ct tt">帳號</td>
+        <td class="ct tt">密碼</td>
+        <td class="ct tt">管理</td>
     </tr>
-    <?php
-    foreach ($rows as $row) {
-
-    ?>
-        <tr>
-            <td class="ct pp"><?= $row['acc'] ?></td>
-            <td class="ct pp"><?= str_repeat("*", strlen($row['pw'])) ?></td>
-            <td class="ct pp">
-                <?php
-                if ($row['acc'] == "admin") {
-                    echo "此帳號為最高權限";
-                } else {
-                ?>
-                    <button onclick="location.href='?do=edit_admin&id=<?= $row['id'] ?>'">修改</button>
-                    <button onclick="del('admin',<?= $row['id'] ?>)">刪除</button>
-                <?php
-                }
-                ?>
-            </td>
-        </tr>
-    <?php
+    <tbody id="admin">
+        <?php
+foreach($accs as $acc){
+    $opr = "<input type='button' value='修改' class='editAdmin' data-id='{$acc['id']}'><input type='button' value='刪除' class='delAdmin' data-table='Admin'  data-id='{$acc['id']}'>";
+    $pw = str_repeat("*",strlen($acc['pw']));
+    if($acc['acc']=="admin"){
+        $opr = "此帳號為最高權限";
     }
     ?>
+<tr>
+    <td class="ct pp"><?=$acc['acc']?></td>
+    <td class="ct pp"><?=$pw?></td>
+    <td class="ct pp"><?=$opr?></td>
+</tr>
+    <?php
+}
+?>
+
+    </tbody>
 </table>
-<div class="ct"><button onclick="location.href='index.php'">返回</button></div>
+<div class="ct"><input type="button" value="返回" onclick="location.href='index.php'"></div>
+<script>
+    $("#addAdmin").on("click",function(){
+        $.ajax({
+            type:"GET",
+            data:{
+                opr:"add"
+            },
+            url:"./back/opr_admin.php",
+            success:function(res){
+                $('#right').html(res)
+            }
+        })
+    })
+    $(".editAdmin").on("click",function(){
+        $.ajax({
+            type:"GET",
+            data:{
+                id:$(this).data('id'),
+                opr:"edit"
+            },
+            url:"./back/opr_admin.php",
+            success:function(res){
+                $('#right').html(res)
+            }
+        })
+    })
+    $(".delAdmin").on('click',function(){
+        $.ajax({
+            type:"post",
+            data:{
+                id:$(this).data('id'),
+                table:$(this).data('table')
+            },
+            url:"./api/del.php",
+            success:function(res){
+$('body').load("?do=admin");
+            }
+
+        })
+    })
+</script>

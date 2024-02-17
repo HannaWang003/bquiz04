@@ -37,13 +37,13 @@ body {
   display: inline-block;
   width: 65%;
   padding: 2%;
-  height: 550px;
+  height:550px;
+	overflow: auto;
   border: #000 1px solid;
-  overflow: auto;
 }
 #bottom {
   height: 70px;
-  background: url(../icon/bot.png);
+  background: url(icon/bot.png);
   background-size: cover;
 }
 .al {
@@ -70,15 +70,23 @@ body {
 .pp td {
   background: #efca85;
 }
-input[type="text"],
-input[type="password"],
 input[type="submit"],
-button,
-.button,
 input[type="reset"],
 input[type="button"],
+button {
+  background: #f3f3f3;
+  border: #ef7429 1px solid;
+  border-radius: 3px;
+  padding: 5px 8px 5px 8px;
+  text-decoration: none;
+  margin: 3px;
+  color: #ef7429;
+}
+input[type="text"],
+input[type="password"],
 select，textarea,
-input[type="number"] {
+input[type="number"],
+.button {
   background: #f3f3f3;
   border: #ccc 1px solid;
   border-radius: 3px;
@@ -95,11 +103,14 @@ input[type="password"] {
   display: none;
 }
 #left .s a {
-  background-color: lightgreen;
+  background: lightgreen;
 }
 div.ww:hover > div.s {
   display: block;
 }
 .sb button {
   font-size: 12px;
+}
+a {
+  cursor: pointer;
 }

@@ -1,76 +1,68 @@
-<h2 class="ct">會員註冊</h2>
-<!-- table.all>tr*6>td.tt.ct+td.pp>input:text -->
+<h1 class="ct">會員註冊</h1>
+<form id="addMem">
 <table class="all">
     <tr>
-        <td class="tt ct">姓名</td>
-        <td class="pp"><input type="text" name="name" id="name"></td>
+        <td class="ct tt">姓名</td>
+        <td class="pp"><input type="text" name="name" id="nam"></td>
     </tr>
     <tr>
-        <td class="tt ct">帳號</td>
-        <td class="pp">
-            <input type="text" name="acc" id="acc">
-            <button onclick="chkacc()">檢測帳號</button>
-        </td>
+        <td class="ct tt">帳號</td>
+        <td class="pp"><input type="text" name="acc" id="acc"><input id="chkBtn" data-type="chk" type="button" value="檢查帳號"></td>
     </tr>
     <tr>
-        <td class="tt ct">密碼</td>
+        <td class="ct tt">密碼</td>
         <td class="pp"><input type="password" name="pw" id="pw"></td>
     </tr>
     <tr>
-        <td class="tt ct">電話</td>
+        <td class="ct tt">電話</td>
         <td class="pp"><input type="text" name="tel" id="tel"></td>
     </tr>
     <tr>
-        <td class="tt ct">住址</td>
+        <td class="ct tt">住址</td>
         <td class="pp"><input type="text" name="addr" id="addr"></td>
     </tr>
     <tr>
-        <td class="tt ct">電子信箱</td>
+        <td class="ct tt">電子信箱</td>
         <td class="pp"><input type="text" name="email" id="email"></td>
     </tr>
 </table>
-<div class="ct">
-    <button onclick="reg()">註冊</button>
-    <button onclick="clean()">重置</button>
-</div>
+<div class="ct"><input type="submit" value="註冊"><input type="reset" value="重置"></div>
+</form>
 <script>
-function reg() {
-    let user = {
-        name: $("#name").val(),
-        acc: $("#acc").val(),
-        pw: $("#pw").val(),
-        tel: $("#tel").val(),
-        addr: $("#addr").val(),
-        email: $("#email").val(),
-    }
-
-    $.get("./api/chk_acc.php", {
-        acc: user.acc
-    }, (res) => {
-        if (parseInt(res) == 1 || user.acc == 'admin') {
-            alert(`此帳號${user.acc}已被使用`)
-        } else {
-            $.post("./api/reg.php", user, () => {
-                location.href = "?do=login"
-            })
-        }
+$("#chkBtn").on("click",function(){
+    let acc = $("#acc").val();
+    let type = $(this).data('type');
+    $.post("./api/opr_mem.php",{acc,type},function(res){
+if(res=="0"){
+    alert("此帳號可註冊");
+}
+else if(res=="2"){
+    alert("勿使用admin註冊")
+}
+else{
+    alert("此帳號已存在，請重新設定")
+    $("#acc").val("");
+}
     })
-}
-
-function chkacc() {
-    let acc = $("#acc").val()
-    $.get("./api/chk_acc.php", {
-        acc
-    }, (res) => {
-        if (parseInt(res) == 1 || acc == 'admin') {
-            alert(`此帳號${acc}已被使用`)
-        } else {
-            alert(`此帳號${acc}可使用`)
+})
+$("#addMem").submit(function(event){
+event.preventDefault();
+let formData = new FormData(this)
+$.ajax({
+    type:"POST",
+    data:formData,
+    contentType:false,
+    processData:false,
+    url:"./api/opr_mem.php",
+    success:function(res){
+        if(res!=0){
+            alert("請重新確認帳號，不得使用admin及已存在的帳號")
+        }else{
+            alert("已完成註冊，請登入")
+                $('body').load("?do=login")
         }
-    })
-}
-
-function clean() {
-    $("#name,#acc,#pw,#tel,#addr,#email").val('');
-}
+                
+        }
+})
+})
 </script>

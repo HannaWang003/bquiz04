@@ -1,121 +1,189 @@
-<h2 class="ct">商品分類</h2>
+<h1 class="ct">商品分類</h1>
 <div class="ct">
-    新增大分類 <input type="text" name="big" id="big"><button onClick="addType('big')">新增</button>
+    <span>新增大分類</span>
+    <input type="text" name="big" id="big">
+    <button onclick="save_type('big')">新增</button>
 </div>
 <div class="ct">
-    新增中分類
+    <span>新增中分類</span>
     <select name="big" id="bigs"></select>
-    <input type="text" name="mid" id="mid"><button onClick="addType('mid')">新增</button>
+    <input type="text" name="mid" id="mid">
+    <button onclick="save_type('mid')">新增</button>
 </div>
-<!-- table.all>(tr.tt>td+td.ct>button*2)+tr.pp.ct>td -->
-<table class="all">
-    <?php
-    $bigs = $Type->all(['big_id' => 0]);
-    foreach ($bigs as $big) {
-    ?>
-    <tr class="tt">
-        <td><?= $big['name'] ?></td>
-        <td class="ct"><button onclick="edit(this,<?= $big['id'] ?>)">修改</button><button
-                onclick="del('type',<?= $big['id'] ?>)">刪除</button></td>
-    </tr>
-    <?php
-        $mids = $Type->all(['big_id' => $big['id']]);
-        foreach ($mids as $mid) {
-        ?>
-    <tr class="pp ct">
-        <td><?= $mid['name'] ?></td>
-        <td class="ct"><button onclick="edit(this,<?= $mid['id'] ?>)">修改</button>
-            <button onclick="del('type',<?= $mid['id'] ?>)">刪除</button>
-        </td>
-    </tr>
-
-
-    <?php
-        }
-    }
-    ?>
-</table>
 <script>
-getTypes(0)
-
-function edit(dom, id) {
-    let name = prompt("請輸入您要修改的分類名稱:", `${$(dom).parent().prev().text()}`)
-    if (name != null) {
-        $.post("./api/save_type.php", {
-            name,
-            id
-        }, () => {
-            $(dom).parent().prev().text(name)
+    getbigtype(0)
+    function getbigtype(big_id){
+        $.ajax({
+            type:"GET",
+            dataType:"json",
+            data:{
+                "big_id":0,
+            },
+            url:"./api/get_types.php",
+            success:function(types){
+                let html = '';
+                // console.log(types)
+                $.each(types,function(idx,type){
+html+=`
+<option value='${type.id}'>${type.name}</option>
+`
+                })
+                $('#bigs').html(html)
+            },
+            error:function(res){
+// console.log(res)
+            }
         })
     }
-}
-
-function getTypes(big_id) {
-    $.get('./api/get_types.php', {
-        big_id
-    }, (types) => {
-        $('#bigs').html(types);
-    })
-}
-
-function addType(type) {
-    let name, big_id
-    switch (type) {
-        case 'big':
-            name = $('#big').val();
-            big_id = 0;
-            break;
-        case 'mid':
-            name = $('#mid').val();
-            big_id = $('#bigs').val();
-            break;
+    function save_type(type){
+        let name,big_id
+        switch(type){
+            case "big":
+                name = $('#big').val();
+                big_id=0;
+                break;
+            case "mid":
+                name = $('#mid').val();
+                big_id=$('#bigs').val();
+        }
+        $.ajax({
+            type:"post",
+            data:{
+                name,
+                big_id
+            },
+            url:"./api/save_type.php",
+            success:function(res){
+                $('body').load("?do=th");
+            }
+        })
     }
-    $.post('./api/save_type.php', {
-        name,
-        big_id
-    }, () => {
-        location.reload();
-    })
-}
 </script>
-<h2 class="ct">商品管理</h2>
-<div class="ct"><button onclick="location.href='?do=add_goods'">新增商品</button></div>
-<!-- table.all>(tr.tt.ct>td*5)+(tr.pp>td*5) -->
+
 <table class="all">
-    <tr class="tt ct">
-        <td>編號</td>
-        <td>商品名稱</td>
-        <td>庫存量</td>
-        <td>狀態</td>
-        <td>操作</td>
-    </tr>
     <?php
-    $goods = $Goods->all();
-    foreach ($goods as $good) {
+$bigs = $Type->all(['big_id'=>0]);
+    foreach($bigs as $big){ 
+
     ?>
-    <tr class="pp">
-        <td><?= $good['no']; ?></td>
-        <td><?= $good['name']; ?></td>
-        <td><?= $good['stock']; ?></td>
-        <td><?= ($good['sh'] == 1) ? "上架" : "下架"; ?></td>
-        <td style="width:120px">
-            <button onclick="location.href='?do=edit_goods&id=<?= $good['id']; ?>'">修改</button>
-            <button onclick="del('goods',<?= $good['id']; ?>)">刪除</button>
-            <button onclick="sh(1,<?= $good['id']; ?>)">上架</button>
-            <button onclick="sh(0,<?= $good['id']; ?>)">下架</button>
-        </td>
+    <tr>
+        <td class="tt"><?=$big['name']?></td>
+        <td class="ct tt"><button onclick="edit(this,<?=$big['id']?>)" >修改</button><button onclick="del(this,'type',<?=$big['id']?>)" >刪除</button></td>
     </tr>
     <?php
-    }
+$mids = $Type->all(['big_id'=>$big['id']]);
+foreach($mids as $mid){
+    ?>
+    <tr>
+        <td class="ct pp"><?=$mid['name']?></td>
+        <td class="ct pp"><button onclick="edit(this,<?=$mid['id']?>)" >修改</button><button onclick="del(this,'type',<?=$mid['id']?>)" >刪除</button></td>
+  
+    </tr>
+<?php
+}
+ }
     ?>
 </table>
 <script>
-function sh(sh, id) {
-    $.post("./api/sh.php", {
-        id,
-        sh
-    }, () => {
-        location.reload();
+function edit(dom,id){
+let name = prompt("請輸入您要修改的分類名稱:",`${$(dom).parent().prev().text()}`)
+// console.log(name)
+if(name!=null){
+    $.post('./api/save_type.php',{name,id},function(res){
+$(dom).parent().prev().text(name)
     })
 }
+}
+function del(dom,table,id){
+$.ajax({
+    type:"post",
+    data:{
+        table,
+        id
+    },
+    url:"./api/del.php",
+    success:function(res){
+       $(dom).closest('tr').remove();
+    }
+
+})
+}
+</script>
+<h1 class="ct">商品管理</h1>
+<div class="ct"><input type="button" value="新增商品" id="PMadd"></div>
+<table class="all" id="PM">
+    <tr>
+        <th class="ct tt">編號</th>
+        <th class="ct tt">商品名稱</th>
+        <th class="ct tt">庫存量</th>
+        <th class="ct tt">狀態</th>
+        <th class="ct tt">操作</th>
+    </tr>
+    
+</table>
+<script>
+    function sh(dom,sh,id){
+        let sw = $(dom).closest('tr').find('.shsw');
+        // console.log(sw);
+        $.post('./api/sh.php',{sh,id},()=>{
+            switch(sh){
+                case "0":
+                    sw.text('下架');
+                    break;
+                    case "1":
+                    sw.text('上架');
+                    break;
+                    
+            }
+        })
+    }
+    function editgoods(id){
+        $.ajax({
+            type:'get',
+            data:{
+                id
+            },
+            url:'./back/edit_goods.php',
+            success:function(res){
+                $('#right').html(res)
+            }
+        })
+    }
+    $('document').ready(function(){
+        let PM = $('#PM');
+        let PMadd = $('#PMadd');
+        // console.log('ok')
+        $.ajax({
+            type:'post',
+            url:'./api/get.php',
+            data:{
+                'table':'Goods',
+            },
+            dataType:'json',
+            success:function(res){
+                // console.log(res);
+                let html='';
+                $.each(res,(key,good)=>{
+                    html+=`
+                    <tr>
+        <td class="pp">${good.no}</td>
+        <td class="pp">${good.name}</td>
+        <td class="pp">${good.stock}</td>
+        <td class="pp shsw">${(good.sh==1)?'上架':'下架'}</td>
+        <td class="pp" style="min-width:120px">
+            <button onclick = 'editgoods(${good.id})'>修改</button>
+            <button onclick='del(this,"Goods",${good.id})'>刪除</button>
+            <button onclick='sh(this,"1",${good.id})'>上架</button>
+            <button onclick='sh(this,"0",${good.id})'>下架</button></td>
+    </tr>
+                    `
+                })
+              PM.append(html);  
+            }
+        })
+//新增商品
+PMadd.on('click',()=>{
+    $('body').load('?do=add_goods');
+})
+    })
 </script>

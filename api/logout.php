@@ -1,4 +1,4 @@
 <?php
-session_start();
-unset($_SESSION['mem'], $_SESSION['admin']);
-header("location:../index.php");
+include_once "db.php";
+unset($_SESSION[$_POST['acc']]);
+?>
