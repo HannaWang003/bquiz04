@@ -69,7 +69,7 @@ include_once "./api/db.php";
         <marquee>情人節特惠活動 &nbsp; 為了慶祝七夕情人節，將舉辦情人兩人到現場有七七折之特惠活動~</marquee>
         <div id="left" class="ct">
             <div style="min-height:400px;">
-                <a href="">全部商品</a>
+                <a href="" id=allgoods>全部商品</a>
                 <div id=menu>
                     <!-- ajax -->
                 </div>
@@ -97,6 +97,7 @@ include_once "./api/db.php";
             <?= $Bot->find(1)['bottom'] ?> </div>
     </div>
     <script>
+        let allGoods = $('#allgoods')
     $(document).ready(function() {
         let menu = $('#menu')
         $.ajax({
@@ -106,17 +107,18 @@ include_once "./api/db.php";
                 'big_id': 0,
             },
             dataType: 'json',
-            url: './api/get.php',
+            url: './api/get_menu.php',
             success: function(bigs) {
-                // console.log(bigs);
+                console.log(bigs);
                 let html = '';
-                $.each(bigs, (key, big) => {
+                $.each(bigs.all, (key, big) => {
                     html += `
 <a class='big' data-id='${big.id}'>${big.name}</a>
 <div></div>
 `
                 })
                 menu.html(html)
+                allGoods.append(`(${bigs.qty})`)
 
             }
         })
@@ -135,14 +137,18 @@ nowitem.next('div').show();
                     big_id,
                 },
                 dataType: 'json',
-                url: './api/get.php',
-                success: function(mid) {
-                    // console.log(mid)
+                url: './api/get_menu.php',
+                success: function(mids) {
+                    console.log(mids);
                     let html = '';
-                    $.each(mid, function(key, val) {
-                        html += `<a class='mid' style="background:lightgreen;width:80%;margin:5px 0px 5px auto">${val.name}</a>`;
+                    $.each(mids.all, function(key, mid) {
+                        html += `<a class='mid' style="background:lightgreen;width:80%;margin:5px 0px 5px auto">${mid.name}</a>`;
                     })
                     nowitem.next('div').html(html);
+                    if(!nowitem.data('appended')){
+                    nowitem.append(`(${mids.qty})`)
+                    nowitem.data('appended',true)
+                }
                 }
 
             })
