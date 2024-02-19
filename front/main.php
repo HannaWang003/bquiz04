@@ -65,7 +65,7 @@ foreach ($goods as $good) {
         <div class="info pp">
             <div class='ct tt'><?= $good['name'] ?></div>
             <div>價錢:<?= $good['price'] ?>
-                <img src="./icon/0402.jpg" style="float:right" onclick="location.href='?do=buycart&id=<?= $good['id']; ?>&qt=1'">
+                <img src="./icon/0402.jpg" style="float:right" onclick="buy(<?= $good['id'] ?>,1)">
             </div>
             <div>規格:<?= $good['spec'] ?></div>
             <div>簡介:<?= mb_substr($good['intro'], 0, 25) ?>...</div>
@@ -76,3 +76,13 @@ foreach ($goods as $good) {
 }
 
 ?>
+<script>
+    function buy(id, qt) {
+        $.post('./api/buycart.php', {
+            id,
+            qt
+        }, (amount) => {
+            $('#amount').text(amount);
+        })
+    }
+</script>
