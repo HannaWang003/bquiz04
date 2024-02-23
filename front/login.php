@@ -1,3 +1,6 @@
+<?php
+include_once "./api/db.php";
+?>
 <h2>第一次購買</h2>
 <img src="./icon/0413.jpg" onclick="location.href='?do=reg'">
 
@@ -16,15 +19,29 @@
         <td class="tt">驗證碼</td>
         <td class="pp">
             <?php
-            $a = rand(10, 99);
-            $b = rand(10, 99);
-            $_SESSION['ans'] = $a + $b;
-            echo $a . "+" . $b . "=";
+            // $a = rand(10, 99);
+            // $b = rand(10, 99);
+            // $_SESSION['ans'] = $a + $b;
+            // echo $a . "+" . $b . "=";
+            // $_SESSION['ans'] = code(5);
+            // $img = captcha($_SESSION['ans']);
             ?>
             <input type="text" name="ans" id="ans">
+            <img src=" " id='captcha'>
+            <button onclick="captcha()">重新產生</button>
         </td>
     </tr>
 </table>
 <div class="ct">
     <button onclick="login('mem')">確認</button>
 </div>
+<script>
+    captcha();
+
+    function captcha() {
+        $.get("./api/captcha.php", (img) => {
+            console.log(img)
+            $('#captcha').attr('src', img);
+        })
+    }
+</script>
