@@ -1,6 +1,3 @@
-<?php
-include_once "./api/db.php";
-?>
 <h2>第一次購買</h2>
 <img src="./icon/0413.jpg" onclick="location.href='?do=reg'">
 

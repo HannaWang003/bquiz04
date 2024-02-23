@@ -22,6 +22,31 @@ class DB
         $this->table = $table;
         $this->pdo = new PDO($this->dsn, 'root', '');
     }
+    private function a2s($where)
+    {
+        foreach ($where as $key => $val) {
+            $tmp[] = "`$key`='$val'";
+        }
+        return $tmp;
+    }
+    private function sql_all($sql, $where, $other)
+    {
+        if (is_array($where)) {
+            if (!empty($where)) {
+                $sql .= " where " . join(" && ", $this->a2s($where));
+            }
+        } else {
+            $sql .= $where;
+        }
+        $sql .= $other;
+        return $sql;
+    }
+    private function math($math, $col, $array = '', $other = '')
+    {
+        $sql = "select $math(`$col`)  from `$this->table` ";
+        $sql = $this->sql_all($sql, $array, $other);
+        return $this->pdo->query($sql)->fetchColumn();
+    }
     function all($where = '', $other = '')
     {
         if (isset($this->table) && !empty($this->table)) {
@@ -36,12 +61,6 @@ class DB
         $sql = $this->sql_all($sql, $where, $other);
         return  $this->pdo->query($sql)->fetchColumn();
     }
-    private function math($math, $col, $array = '', $other = '')
-    {
-        $sql = "select $math(`$col`)  from `$this->table` ";
-        $sql = $this->sql_all($sql, $array, $other);
-        return $this->pdo->query($sql)->fetchColumn();
-    }
     function sum($col = '', $where = '', $other = '')
     {
         return  $this->math('sum', $col, $where, $other);
@@ -53,17 +72,6 @@ class DB
     function min($col, $where = '', $other = '')
     {
         return  $this->math('min', $col, $where, $other);
-    }
-    function find($where)
-    {
-        $sql = "select * from $this->table ";
-        if (is_array($where)) {
-            $tmp = $this->a2s($where);
-            $sql .= " where " . join(" && ", $tmp);
-        } elseif (is_numeric($where)) {
-            $sql .= " where `id`=" . $where;
-        }
-        return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
     function save($array)
     {
@@ -83,6 +91,17 @@ class DB
         }
         return $this->pdo->exec($sql);
     }
+    function find($where)
+    {
+        $sql = "select * from $this->table ";
+        if (is_array($where)) {
+            $tmp = $this->a2s($where);
+            $sql .= " where " . join(" && ", $tmp);
+        } elseif (is_numeric($where)) {
+            $sql .= " where `id`=" . $where;
+        }
+        return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+    }
     function del($where)
     {
         $sql = "delete from `$this->table` where ";
@@ -92,26 +111,9 @@ class DB
         } else if (is_numeric($where)) {
             $sql .= " `id`='$where'";
         }
+        // $sql = "delete from `$this->table` where `id` IN (" . join(',', $where) . ")";
+        // $sql = "delete from `$this->table` where `$this->table`.`id` in (" . join(',', $where) . ")";
         return $this->pdo->exec($sql);
-    }
-    private function a2s($where)
-    {
-        foreach ($where as $key => $val) {
-            $tmp[] = "`$key`='$val'";
-        }
-        return $tmp;
-    }
-    private function sql_all($sql, $where, $other)
-    {
-        if (is_array($where)) {
-            if (!empty($where)) {
-                $sql .= " where " . join(" && ", $this->a2s($where));
-            }
-        } else {
-            $sql .= $where;
-        }
-        $sql .= $other;
-        return $sql;
     }
     function q($sql)
     {
