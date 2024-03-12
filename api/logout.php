@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (isset($_SESSION['mag'])) {
+if ($_GET['do'] == "mag") {
     unset($_SESSION['mag']);
 }
-if (isset($_SESSION['mem'])) {
-    unset($_SESSION['mem']);
+if ($_GET['do'] == "mem") {
+    unset($_SESSION['user']);
 }
 header("location:../index.php");

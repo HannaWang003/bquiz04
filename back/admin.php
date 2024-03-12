@@ -21,7 +21,7 @@ $rows = $Admin->all();
                 } else {
                 ?>
             <button onclick="location.href='?do=edit_admin&id=<?= $row['id'] ?>'">修改</button>
-            <button onclick="del(<?= $row['id'] ?>)">刪除</button>
+            <button onclick="location.href='./api/del.php?do=admin&id=<?= $row['id'] ?>'">刪除</button>
             <?php
                 }
                 ?>

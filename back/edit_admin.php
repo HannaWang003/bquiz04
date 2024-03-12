@@ -3,7 +3,7 @@ $row = $Admin->find($_GET['id']);
 $pr = unserialize($row['pr']);
 ?>
 <h1 class="ct">修改管理帳號</h1>
-<form action="./api/edit_admin?do=admin" method="post">
+<form action="./api/edit_admin.php" method="post">
     <table class="all">
         <tr>
             <td class="tt">帳號</td>
@@ -25,7 +25,8 @@ $pr = unserialize($row['pr']);
         </tr>
     </table>
     <div class="ct">
-        <input type="submit" value="新增">
-        <input type="reset" value="修改">
+        <input type="hidden" name="id" value="<?= $row['id'] ?>">
+        <input type="submit" value="修改">
+        <input type="reset" value="重置">
     </div>
 </form>

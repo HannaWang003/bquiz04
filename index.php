@@ -27,8 +27,16 @@ include_once "./api/db.php";
                 <a href="?do=news">最新消息</a> |
                 <a href="?do=look">購物流程</a> |
                 <a href="?do=buycart">購物車</a> |
+                <?php
+                if (isset($_SESSION['user'])) {
+                ?>
+                <button onclick="location.href='./api/logout.php?do=mem'">會員登出</button>|
+                <?php
+                } else {
+                ?>
                 <a href="?do=login">會員登入</a> |
                 <?php
+                }
                 if (isset($_SESSION['mag'])) {
                     echo  "<a href='./back.php'>回管理頁</a>";
                 } else {
@@ -36,7 +44,10 @@ include_once "./api/db.php";
                 }
                 ?>
             </div>
-            情人節特惠活動 &nbsp; 為了慶祝七夕情人節，將舉辦情人兩人到現場有七七折之特惠活動~
+            <marquee behavior="" direction="">
+                <span>年終特賣會開跑了</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>情人節特惠活動</span>
+            </marquee>
         </div>
         <div id="left" class="ct">
             <div style="min-height:400px;">
@@ -49,17 +60,17 @@ include_once "./api/db.php";
         </div>
         <div id="right">
             <?php
-                $do = ($_GET['do']) ?? "main";
-                $file = "./front/$do.php";
-                if (file_exists($file)) {
-                    include $file;
-                } else {
-                    include "./front/main.php";
-                }
-                ?>
+            $do = ($_GET['do']) ?? "main";
+            $file = "./front/$do.php";
+            if (file_exists($file)) {
+                include $file;
+            } else {
+                include "./front/main.php";
+            }
+            ?>
         </div>
         <div id="bottom" style="line-height:70px;background:url(./img/bot.png); color:#FFF;" class="ct">
-            頁尾版權 : </div>
+            <?= $Bot->find(1)['bot'] ?></div>
     </div>
 
 </body>
