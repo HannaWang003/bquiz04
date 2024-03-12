@@ -50,7 +50,25 @@ include_once "./api/db.php";
             </marquee>
         </div>
         <div id="left" class="ct">
-            <div style="min-height:400px;">
+            <div style="height:400px;">
+            <?php
+$allnum = $Good->count(['sh'=>1]);
+echo "<a>全部商品($allnum)</a>";
+$bigs = $Type->all(['big_id'=>0]);
+foreach($bigs as $big){
+    $bignum = $Good->count(['sh'=>1,'big'=>$big['id']]);
+    echo "<div class='onhover'>";
+    $mids = $Type->all(['big_id'=>$big['id']]);
+    echo "<a>{$big['name']}($bignum)</a>";
+foreach($mids as $mid){
+    echo "<div class='s'>";
+    echo "<a>{$mid['name']}</a>";
+    echo "</div>";
+};
+    echo "</div>";
+}
+
+?>
             </div>
             <span>
                 <div>進站總人數</div>
@@ -58,7 +76,7 @@ include_once "./api/db.php";
                     00005 </div>
             </span>
         </div>
-        <div id="right">
+        <div id="right" style="height:200px;overflow:auto;">
             <?php
             $do = ($_GET['do']) ?? "main";
             $file = "./front/$do.php";
@@ -72,7 +90,15 @@ include_once "./api/db.php";
         <div id="bottom" style="line-height:70px;background:url(./img/bot.png); color:#FFF;" class="ct">
             <?= $Bot->find(1)['bot'] ?></div>
     </div>
-
+<script>
+    $('.onhover').hover(function(){
+        console.log($(this));
+        $('.s').hide();
+        $(this).children('.s').show();
+    },function(){
+        $('.s').hide();
+    })
+</script>
 </body>
 
 </html>

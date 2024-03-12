@@ -118,3 +118,4 @@ $Bot = new DB('bot');
 $Admin = new DB('admin');
 $Mem = new DB('mem');
 $Type = new DB('type');
+$Good = new DB('good');
