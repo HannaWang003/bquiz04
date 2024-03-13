@@ -13,15 +13,15 @@
     ?>
         <tr>
             <th class="tt" style="width:70%;text-align:start"><?= $big['name'] ?></th>
-            <th class="tt"><button onclick="modify(this,<?=$big['id']?>)">修改</button><button onclick="del(this,'type'<?=$big['id']?>)">刪除</button></th>
+            <th class="tt"><button onclick="modify(this,<?= $big['id'] ?>)">修改</button><button onclick="del(this,'type'<?= $big['id'] ?>)">刪除</button></th>
         </tr>
-        <?
+        <?php
         $subs = $Type->all(['big_id' => $big['id']]);
         foreach ($subs as $sub) {
         ?>
             <tr>
                 <td class="pp" style="text-align:center"><?= $sub['name'] ?></td>
-                <td class="pp" style="text-align:center"><button onclick="modify(this,<?=$sub['id']?>)">修改</button><button onclick="del(this,'type',<?=$sub['id']?>)">刪除</button></td>
+                <td class="pp" style="text-align:center"><button onclick="modify(this,<?= $sub['id'] ?>)">修改</button><button onclick="del(this,'type',<?= $sub['id'] ?>)">刪除</button></td>
             </tr>
     <?php
         };
@@ -42,20 +42,20 @@ $goods = $Good->all();
         <th class="tt">操作</th>
     </tr>
     <?php
-foreach($goods as $good){
+    foreach ($goods as $good) {
     ?>
-    <tr>
-        <td class="pp"><?=$good['no']?></td>
-        <td class="pp"><?=$good['name']?></td>
-        <td class="pp"><?=$good['stock']?></td>
-        <td class="pp"><?=($good['sh']==1)?"販售中":"已下架"?></td>
-        <td class="pp">
-            <button onclick="location.href='?do=edit_good&id=<?=$good['id']?>'">修改</button>
-            <button onclick="del(this,'good',<?=$good['id']?>)">刪除</button>
-            <button onclick="chg(<?=$good['id']?>,1)">上架</button>
-            <button onclick="chg(<?=$good['id']?>,0)">下架</button>
-        </td>
-    </tr>
+        <tr>
+            <td class="pp"><?= $good['no'] ?></td>
+            <td class="pp"><?= $good['name'] ?></td>
+            <td class="pp"><?= $good['stock'] ?></td>
+            <td class="pp"><?= ($good['sh'] == 1) ? "販售中" : "已下架" ?></td>
+            <td class="pp">
+                <button onclick="location.href='?do=edit_good&id=<?= $good['id'] ?>'">修改</button>
+                <button onclick="del(this,'good',<?= $good['id'] ?>)">刪除</button>
+                <button onclick="chg(<?= $good['id'] ?>,1)">上架</button>
+                <button onclick="chg(<?= $good['id'] ?>,0)">下架</button>
+            </td>
+        </tr>
     <?php
     }
     ?>
@@ -87,24 +87,36 @@ foreach($goods as $good){
             location.reload();
         })
     })
-    function modify(dom,id){
-let name = prompt("請輸入您要修改的分類名稱:",`${$(dom).parent().prev().text()}`);
-if(name!=null){
-    $.post('./api/edit.php?do=type',{name,id},function(){
-        $(dom).parent().prev().text(name)
-    })
-}
+
+    function modify(dom, id) {
+        let name = prompt("請輸入您要修改的分類名稱:", `${$(dom).parent().prev().text()}`);
+        if (name != null) {
+            $.post('./api/edit.php?do=type', {
+                name,
+                id
+            }, function() {
+                $(dom).parent().prev().text(name)
+            })
+        }
     }
-    function del(dom,table,id){
+
+    function del(dom, table, id) {
         let elm = $(dom).closest('tr');
         // console.log(elm);
-        $.get('./api/del.php',{table,id},function(res){
+        $.get('./api/del.php', {
+            table,
+            id
+        }, function(res) {
             elm.remove();
         })
     }
-    function chg(id,sh){
-        $.post('./api/chg.php',{id,sh},function(res){
-location.reload();
+
+    function chg(id, sh) {
+        $.post('./api/chg.php', {
+            id,
+            sh
+        }, function(res) {
+            location.reload();
         })
     }
 </script>

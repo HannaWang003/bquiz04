@@ -1,8 +1,7 @@
 <?php
 include_once "./api/db.php";
 ?>
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0039) -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -30,11 +29,11 @@ include_once "./api/db.php";
                 <?php
                 if (isset($_SESSION['user'])) {
                 ?>
-                <button onclick="location.href='./api/logout.php?do=mem'">會員登出</button>|
+                    <button onclick="location.href='./api/logout.php?do=mem'">會員登出</button>|
                 <?php
                 } else {
                 ?>
-                <a href="?do=login">會員登入</a> |
+                    <a href="?do=login">會員登入</a> |
                 <?php
                 }
                 if (isset($_SESSION['mag'])) {
@@ -50,25 +49,25 @@ include_once "./api/db.php";
             </marquee>
         </div>
         <div id="left" class="ct">
-            <div style="height:400px;">
-            <?php
-$allnum = $Good->count(['sh'=>1]);
-echo "<a>全部商品($allnum)</a>";
-$bigs = $Type->all(['big_id'=>0]);
-foreach($bigs as $big){
-    $bignum = $Good->count(['sh'=>1,'big'=>$big['id']]);
-    echo "<div class='onhover'>";
-    $mids = $Type->all(['big_id'=>$big['id']]);
-    echo "<a>{$big['name']}($bignum)</a>";
-foreach($mids as $mid){
-    echo "<div class='s'>";
-    echo "<a>{$mid['name']}</a>";
-    echo "</div>";
-};
-    echo "</div>";
-}
+            <div style="min-height:400px;">
+                <?php
+                $allnum = $Good->count(['sh' => 1]);
+                echo "<a href='index.php'>全部商品($allnum)</a>";
+                $bigs = $Type->all(['big_id' => 0]);
+                foreach ($bigs as $big) {
+                    $bignum = $Good->count(['sh' => 1, 'big' => $big['id']]);
+                    echo "<div class='onhover'>";
+                    $mids = $Type->all(['big_id' => $big['id']]);
+                    echo "<a>{$big['name']}($bignum)</a>";
+                    foreach ($mids as $mid) {
+                        echo "<div class='s'>";
+                        echo "<a href='index.php?mid={$mid['id']}'>{$mid['name']}</a>";
+                        echo "</div>";
+                    };
+                    echo "</div>";
+                }
 
-?>
+                ?>
             </div>
             <span>
                 <div>進站總人數</div>
@@ -76,7 +75,7 @@ foreach($mids as $mid){
                     00005 </div>
             </span>
         </div>
-        <div id="right" style="height:200px;overflow:auto;">
+        <div id="right" style="height:400px;overflow:auto;">
             <?php
             $do = ($_GET['do']) ?? "main";
             $file = "./front/$do.php";
@@ -90,15 +89,15 @@ foreach($mids as $mid){
         <div id="bottom" style="line-height:70px;background:url(./img/bot.png); color:#FFF;" class="ct">
             <?= $Bot->find(1)['bot'] ?></div>
     </div>
-<script>
-    $('.onhover').hover(function(){
-        console.log($(this));
-        $('.s').hide();
-        $(this).children('.s').show();
-    },function(){
-        $('.s').hide();
-    })
-</script>
+    <script>
+        $('.onhover').hover(function() {
+            console.log($(this));
+            $('.s').hide();
+            $(this).children('.s').show();
+        }, function() {
+            $('.s').hide();
+        })
+    </script>
 </body>
 
 </html>
