@@ -19,6 +19,7 @@
         <td class="pp">
             <?= "$a + $b =" ?>
             <input type="text" name="ans" id="ans">
+            <input type="hidden" name="ans2" id="ans2" value="<?=$a+$b?>">
         </td>
     </tr>
 </table>
@@ -27,16 +28,19 @@
 </div>
 <script>
 function login() {
+    let ans = $('#ans').val();
+    let ans2=$('#ans2').val();
+    if(ans!=ans2){
+        alert("對不起，您輸入的驗證碼有誤請您重新登入");
+        location.reload();
+    }
+    else{
     let acc = $('#acc').val();
     let pw = $('#pw').val();
-    let ans = $('#ans').val();
-    $.post('./api/chk.php', {
-        table: 'admin',
+    $.post('./api/chk_admin.php', {
         acc,
         pw,
-        ans
     }, function(res) {
-        console.log(res);
         switch (res) {
             case "0":
                 alert("帳號或密碼錯誤");
@@ -45,11 +49,8 @@ function login() {
             case "1":
                 location.href = './back.php';
                 break;
-            case "2":
-                alert("驗證碼輸入錯誤");
-                location.reload();
-                break;
         }
     })
+    }   
 }
 </script>

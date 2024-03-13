@@ -15,11 +15,10 @@ include_once "./api/db.php";
 </head>
 
 <body>
-    <iframe name="back" style="display:none;"></iframe>
     <div id="main">
         <div id="top">
-            <a href="?">
-                <img src="./img/0416.jpg">
+            <a href="?" style="width:55%;">
+                <img src="./img/0416.jpg" style="width:100%;">
             </a>
             <div style="padding:10px;">
                 <a href="index.php">回首頁</a> |
@@ -43,13 +42,13 @@ include_once "./api/db.php";
                 }
                 ?>
             </div>
-            <marquee behavior="" direction="">
+        </div>
+        <marquee behavior="" direction="">
                 <span>年終特賣會開跑了</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>情人節特惠活動</span>
             </marquee>
-        </div>
         <div id="left" class="ct">
-            <div style="min-height:400px;">
+            <div>
                 <?php
                 $allnum = $Good->count(['sh' => 1]);
                 echo "<a href='index.php'>全部商品($allnum)</a>";
@@ -75,7 +74,7 @@ include_once "./api/db.php";
                     00005 </div>
             </span>
         </div>
-        <div id="right" style="height:400px;overflow:auto;">
+        <div id="right">
             <?php
             $do = ($_GET['do']) ?? "main";
             $file = "./front/$do.php";

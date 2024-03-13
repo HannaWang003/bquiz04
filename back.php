@@ -29,16 +29,20 @@ if (!isset($_SESSION['mag'])) {
         </div>
         <div id="left" class="ct">
             <div style="height:400px;">
-                <a href="?do=admin">管理權限設置</a>
-                <a href="?do=th">商品分類與管理</a>
-                <a href="?do=order">訂單管理</a>
-                <a href="?do=mem">會員管理</a>
-                <a href="?do=bot">頁尾版權管理</a>
-                <a href="?do=news">最新消息管理</a>
+            <a href="?do=admin">管理權限設置</a>
+            <?php
+$admin = $Admin->find(['acc'=>$_SESSION['mag']]);
+$adminpr = unserialize($admin['pr']);
+foreach($adminpr as $page=>$val){
+         ?>
+                <a href="?do=<?=$page?>"><?=$val?></a>
+        <?php
+        }
+        ?>
                 <a href="./api/logout.php?do=mag" style="color:#f00;">登出</a>
             </div>
         </div>
-        <div id="right" style="height:400px;overflow:auto;">
+        <div id="right">
             <?php
             $do = ($_GET['do']) ?? "admin";
             $file = "./back/$do.php";

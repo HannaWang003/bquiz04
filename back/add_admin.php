@@ -12,11 +12,11 @@
         <tr>
             <td class="tt">權限</td>
             <td class="pp">
-                <input type="checkbox" name="pr[]" value="1">商品分類與管理<br>
-                <input type="checkbox" name="pr[]" value="2">訂單管理<br>
-                <input type="checkbox" name="pr[]" value="3">會員管理<br>
-                <input type="checkbox" name="pr[]" value="4">頁尾版權區管理<br>
-                <input type="checkbox" name="pr[]" value="5">最新消息管理<br>
+                <input type="checkbox" name="pr[th]" value="商品分類與管理">商品分類與管理<br>
+                <input type="checkbox" name="pr[order]" value="訂單管理">訂單管理<br>
+                <input type="checkbox" name="pr[mem]" value="會員管理">會員管理<br>
+                <input type="checkbox" name="pr[bot]" value="頁尾版權區管理">頁尾版權區管理<br>
+                <input type="checkbox" name="pr[news]" value="最新消息管理">最新消息管理<br>
             </td>
         </tr>
     </table>

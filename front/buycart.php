@@ -1,9 +1,9 @@
 <?php
 if (isset($_GET['id'])) {
-    if (!isset($_SESSION['cart'][$_GET['id']]) || !isset($_GET['qt'])) {
-        $_SESSION['cart'][$_GET['id']] = 1;
-    } else {
+    if (isset($_SESSION['cart'][$_GET['id']]) && isset($_GET['qt'])) {
         $_SESSION['cart'][$_GET['id']] = $_GET['qt'];
+    } else {
+        $_SESSION['cart'][$_GET['id']] = 1;
     }
 }
 ?>
@@ -31,7 +31,7 @@ if (isset($_GET['id'])) {
                 <td class="pp"><?= $good['stock'] ?></td>
                 <td class="pp"><?= $good['price'] ?></td>
                 <td class="pp"><?= $good['price'] * $qt ?></td>
-                <td class="pp"><button onclick="del($id)">刪除</button></td>
+                <td class="pp"><button onclick="del(<?=$id?>)">刪除</button></td>
             </tr>
     <?php
         }

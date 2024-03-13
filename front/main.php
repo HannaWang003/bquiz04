@@ -17,7 +17,7 @@ if (isset($_GET['mid'])) {
     foreach ($goods as $good) {
     ?>
     <tr>
-        <td rowspan="4" class="pp ct"><img src="./img/<?= $good['img'] ?>" style="width:150px;height:100px"></td>
+        <td rowspan="4" class="pp ct"><a href="?do=product&id=<?= $good['id'] ?>"><img src="./img/<?= $good['img'] ?>" style="width:150px;height:100px"></a></td>
         <td class="tt">
             <p class="ct" style="font-weight:bolder"><?= $good['name'] ?></p>
         </td>
