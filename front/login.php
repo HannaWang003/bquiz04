@@ -1,3 +1,8 @@
+<h2>第一次購物</h2>
+<button onclick="location.href='?do=reg'"><img src="../img/0413.jpg" alt=""></button>
+<h2>會員登入</h2>
+<br>
+<br>
 <table class="all">
     <tr>
         <td class="tt">帳號</td>
@@ -32,17 +37,16 @@
             let acc = $('#acc').val();
             let pw = $('#pw').val();
             $.post('./api/login.php', {
-                table: 'Admin',
+                table: "Mem",
                 acc,
                 pw
             }, function(res) {
-                console.log(res);
                 switch (res) {
                     case "0":
                         alert("帳號或密碼錯誤");
                         break;
                     case "1":
-                        location.href = "./back.php"
+                        location.href = "?do=buycart";
                         break;
                 }
             })
