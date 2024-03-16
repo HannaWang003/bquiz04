@@ -9,29 +9,30 @@
     $admins = $Admin->all();
     foreach ($admins as $admin) {
     ?>
-    <tr>
-        <td class="pp"><?= $admin['acc'] ?></td>
-        <td class="pp"><?= str_repeat("*", mb_strlen($admin['pw'])) ?></td>
-        <td class="pp">
-            <?php
+        <tr>
+            <td class="pp"><?= $admin['acc'] ?></td>
+            <td class="pp"><?= str_repeat("*", mb_strlen($admin['pw'])) ?></td>
+            <td class="pp">
+                <?php
                 if ($admin['acc'] == "admin") {
                     echo "此帳號為最高權限";
                 } else {
                 ?>
-            <input type="button" onclick="location.href='?do=edit_admin&id=<?= $admin['id'] ?>'" value="修改">
-            <input type="button" onclick="del(<?= $admin['id'] ?>)" value="刪除">
-            <?php
+                    <input type="button" onclick="location.href='?do=edit_admin&id=<?= $admin['id'] ?>'" value="修改">
+                    <input type="button" onclick="del(<?= $admin['id'] ?>)" value="刪除">
+                <?php
                 }
 
                 ?>
-        </td>
-    </tr>
+            </td>
+        </tr>
     <?php
     }
     ?>
 </table>
 <div class="ct"><button onclick="location.href='./index.php'">返回</button></div>
 <div id="addform" style="display:none">
+    <h1 class="ct">新增管理帳號</h1>
     <form action="./api/add_admin.php" method="post">
         <table class="all">
             <tr>
@@ -43,7 +44,7 @@
                 <td class="pp"><input type="password" name="pw" id="pw"></td>
             </tr>
             <tr>
-                <td class="tt">帳號</td>
+                <td class="tt">權限</td>
                 <td class="pp" style="display:flex;flex-direction:column">
                     <div><input type="checkbox" name="pr[th]" value="商品分類與管理">商品分類與管理</div>
                     <div><input type="checkbox" name="pr[order]" value="訂單管理">訂單管理</div>
@@ -59,7 +60,16 @@
     </form>
 </div>
 <script>
-$('#add').on('click', function() {
-    $('#addform').toggle();
-})
+    $('#add').on('click', function() {
+        $('#addform').toggle();
+    })
+
+    function del(id) {
+        $.post('./api/del.php', {
+            table: "Admin",
+            id
+        }, function(res) {
+            location.reload();
+        })
+    }
 </script>
