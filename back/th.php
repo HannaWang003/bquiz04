@@ -1,4 +1,4 @@
-<h2 class="ct">商品類</h2>
+<h2 class="ct">商品分類</h2>
 <div class="ct">新增大分類<input type="text" name="big" id="big" /><button class="addBig">新增</button></div>
 <div class="ct">
     新增中分類
@@ -39,7 +39,7 @@
     }
     ?>
 </table>
-<div class="ct">商品管理</div>
+<h1 class="ct">商品管理</h1>
 <div class="ct"><button onclick="location.href='?do=add_good'">新增商品</button></div>
 <table class="all">
     <tr>
