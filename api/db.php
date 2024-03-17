@@ -97,3 +97,5 @@ $Admin = new DB('admin');
 $Bot = new DB('bot');
 $Mem = new DB('mem');
 $Order = new DB('orders');
+$Th = new DB('th');
+$Good = new DB('goods');
