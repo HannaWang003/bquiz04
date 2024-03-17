@@ -1,7 +1,7 @@
 <style>
-th {
-    width: 40%;
-}
+    th {
+        width: 40%;
+    }
 </style>
 <?php
 $row = $Good->find($_GET['id']);
@@ -53,8 +53,7 @@ $row = $Good->find($_GET['id']);
         </tr>
         <tr>
             <th class="tt">商品介紹</th>
-            <td class="pp"><textarea name="intro" id="intro"
-                    style="width:100%;height:200px"><?= $row['intro'] ?></textarea></td>
+            <td class="pp"><textarea name="intro" id="intro" style="width:100%;height:200px"><?= $row['intro'] ?></textarea></td>
         </tr>
     </table>
     <div class="ct">
@@ -64,29 +63,29 @@ $row = $Good->find($_GET['id']);
     </div>
 </form>
 <script>
-getbig(<?= $_GET['id'] ?>);
+    getbig(<?= $_GET['id'] ?>);
 
-function getbig(goodid) {
-    $.post('./api/getgood.php', {
-        goodid
-    }, function(res) {
-        $('#big').html(res)
-        let id = $('#big').val();
-        getmid(id, goodid);
-    })
-}
+    function getbig(id) {
+        $.post('./api/getbig.php', {
+            id
+        }, function(res) {
+            $('#big').html(res)
+            let big_id = $('#big').val();
+            getmid(id, big_id);
+        })
+    }
 
-function getmid(id, goodid) {
-    $.post('./api/getgood.php', {
-        id,
-        goodid
-    }, function(res) {
-        $('#mid').html(res);
-        // console.log(res)
+    function getmid(id, big_id) {
+        $.post('./api/getmid.php', {
+            id,
+            big_id
+        }, function(res) {
+            $('#mid').html(res);
+            // console.log(res)
+        })
+    }
+    $('#big').on('change', function() {
+        let big_id = $('#big').val();
+        getmid(<?= $_GET['id'] ?>, big_id);
     })
-}
-$('#big').on('change', function() {
-    let id = $('#big').val();
-    getmid(id);
-})
 </script>

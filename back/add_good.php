@@ -1,7 +1,7 @@
 <style>
-    th {
-        width: 40%;
-    }
+th {
+    width: 40%;
+}
 </style>
 <h2 class="ct">新增商品</h2>
 <form action="./api/add_good.php" method="post" enctype="multipart/form-data">
@@ -59,25 +59,25 @@
     </div>
 </form>
 <script>
-    getbig();
+getbig();
 
-    function getbig() {
-        $.post('./api/gettype.php', function(res) {
-            $('#big').html(res)
-            let id = $('#big').val();
-            getmid(id);
-        })
-    }
-
-    function getmid(id) {
-        $.post('./api/gettype.php', {
-            id
-        }, function(res) {
-            $('#mid').html(res);
-        })
-    }
-    $('#big').on('change', function() {
-        let id = $('#big').val();
-        getmid(id);
+function getbig() {
+    $.post('./api/getbig.php', function(res) {
+        $('#big').html(res)
+        let big_id = $('#big').val();
+        getmid(big_id);
     })
+}
+
+function getmid(big_id) {
+    $.post('./api/getmid.php', {
+        big_id
+    }, function(res) {
+        $('#mid').html(res);
+    })
+}
+$('#big').on('change', function() {
+    let id = $('#big').val();
+    getmid(id);
+})
 </script>

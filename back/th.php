@@ -8,7 +8,7 @@
         if (!empty($rows)) {
             foreach ($rows as $row) {
         ?>
-        <option value="<?= $row['id'] ?>"><?= $row['type'] ?></option>
+                <option value="<?= $row['id'] ?>"><?= $row['type'] ?></option>
         <?php
             }
         }
@@ -22,20 +22,18 @@
     $bigs = $Th->all(['big_id' => 0]);
     foreach ($bigs as $big) {
     ?>
-    <tr>
-        <td class="tt"><?= $big['type'] ?></td>
-        <td class="tt"><button class="modify" data-id="<?= $big['id'] ?>">修改</button><button class="del"
-                data-id="<?= $big['id'] ?>" data-table="Th">刪除</button></td>
-    </tr>
-    <?php
+        <tr>
+            <td class="tt"><?= $big['type'] ?></td>
+            <td class="tt"><button class="modify" data-id="<?= $big['id'] ?>">修改</button><button class="del" data-id="<?= $big['id'] ?>" data-table="Th">刪除</button></td>
+        </tr>
+        <?php
         $mids = $Th->all(['big_id' => $big['id']]);
         foreach ($mids as $mid) {
         ?>
-    <tr>
-        <td class="pp"><?= $mid['type'] ?></td>
-        <td class="pp"><button class="modify" data-id="<?= $mid['id'] ?>">修改</button><button class="del"
-                data-id="<?= $mid['id'] ?>" data-table="Th">刪除</button></td>
-    </tr>
+            <tr>
+                <td class="pp"><?= $mid['type'] ?></td>
+                <td class="pp"><button class="modify" data-id="<?= $mid['id'] ?>">修改</button><button class="del" data-id="<?= $mid['id'] ?>" data-table="Th">刪除</button></td>
+            </tr>
     <?php
         }
     }
@@ -55,60 +53,60 @@
     $goods = $Good->all();
     foreach ($goods as $good) {
     ?>
-    <tr>
-        <td class="pp"><?= $good['no'] ?></td>
-        <td class="pp"><?= $good['name'] ?></td>
-        <td class="pp"><?= $good['stock'] ?></td>
-        <td class="pp"><?= ($good['sh'] == "1") ? "販售中" : "已下架" ?></td>
-        <td class="pp">
-            <button onclick="location.href='?do=edit_good&id=<?= $good['id'] ?>'">修改</button>
-            <button class="del" data-id="<?= $good['id'] ?>" data-table="Good">刪除</button><br>
-            <button data-sh="1" data-id="<?= $good['id'] ?>" class="shBtn">上架</button>
-            <button data-sh="0" data-id="<?= $good['id'] ?>" class="shBtn">下架</button>
-        </td>
-    </tr>
+        <tr>
+            <td class="pp"><?= $good['no'] ?></td>
+            <td class="pp"><?= $good['name'] ?></td>
+            <td class="pp"><?= $good['stock'] ?></td>
+            <td class="pp"><?= ($good['sh'] == "1") ? "販售中" : "已下架" ?></td>
+            <td class="pp">
+                <button onclick="location.href='?do=edit_good&id=<?= $good['id'] ?>'">修改</button>
+                <button class="del" data-id="<?= $good['id'] ?>" data-table="Good">刪除</button><br>
+                <button data-sh="1" data-id="<?= $good['id'] ?>" class="shBtn">上架</button>
+                <button data-sh="0" data-id="<?= $good['id'] ?>" class="shBtn">下架</button>
+            </td>
+        </tr>
     <?php
     }
     ?>
 </table>
 
 <script>
-$('.addBig').on('click', function() {
-    let big = $('#big').val();
-    $.post('./api/add_th.php', {
-        big
-    }, function(res) {
-        location.reload();
+    $('.addBig').on('click', function() {
+        let big = $('#big').val();
+        $.post('./api/add_th.php', {
+            big
+        }, function(res) {
+            location.reload();
+        })
     })
-})
-$('.addMid').on('click', function() {
-    let mid = $('#mid').val();
-    let big_id = $('#big_id').val()
-    $.post('./api/add_th.php', {
-        big_id,
-        mid
-    }, function(res) {
-        location.reload();
+    $('.addMid').on('click', function() {
+        let mid = $('#mid').val();
+        let big_id = $('#big_id').val()
+        $.post('./api/add_th.php', {
+            big_id,
+            mid
+        }, function(res) {
+            location.reload();
+        })
     })
-})
-$('.del').on('click', function() {
-    let id = $(this).data('id');
-    let table = $(this).data('table');
-    $.post('./api/del.php', {
-        id,
-        table
-    }, function(res) {
-        location.reload();
+    $('.del').on('click', function() {
+        let id = $(this).data('id');
+        let table = $(this).data('table');
+        $.post('./api/del.php', {
+            id,
+            table
+        }, function(res) {
+            location.reload();
+        })
     })
-})
-$('.shBtn').on('click', function() {
-    let id = $(this).data('id');
-    let sh = $(this).data('sh');
-    $.post('./api/sh.php', {
-        id,
-        sh
-    }, function(res) {
-        location.reload();
+    $('.shBtn').on('click', function() {
+        let id = $(this).data('id');
+        let sh = $(this).data('sh');
+        $.post('./api/sh.php', {
+            id,
+            sh
+        }, function(res) {
+            location.reload();
+        })
     })
-})
 </script>
