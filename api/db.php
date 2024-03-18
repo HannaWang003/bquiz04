@@ -16,7 +16,8 @@ class DB
 {
     //3
     protected $table;
-    protected $dsn = "mysql:host=localhost;charset=utf8;dbname=db04s";
+    // protected $dsn = "mysql:host=localhost;charset=utf8;dbname=db04s";
+    protected $dsn = "mysql:host=localhost;charset=utf8;dbname=db044";
     protected $pdo;
     function __construct($table)
     {
@@ -99,3 +100,4 @@ $Mem = new DB('mem');
 $Order = new DB('orders');
 $Th = new DB('th');
 $Good = new DB('goods');
+$Order = new DB('orders');

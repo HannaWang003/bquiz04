@@ -1,3 +1,8 @@
+<?php
+if (!isset($_SESSION['mem'])) {
+    to("./index.php");
+}
+?>
 <h1 class="ct"><?= $_SESSION['mem'] ?>的購物車</h1>
 <table class="detail" style="width:100%">
     <tr>
