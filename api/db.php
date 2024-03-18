@@ -16,8 +16,8 @@ class DB
 {
     //3
     protected $table;
-    // protected $dsn = "mysql:host=localhost;charset=utf8;dbname=db04s";
-    protected $dsn = "mysql:host=localhost;charset=utf8;dbname=db044";
+    protected $dsn = "mysql:host=localhost;charset=utf8;dbname=db04s";
+    // protected $dsn = "mysql:host=localhost;charset=utf8;dbname=db044";
     protected $pdo;
     function __construct($table)
     {
