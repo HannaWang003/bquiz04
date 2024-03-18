@@ -39,13 +39,13 @@ $mem = $Mem->find(['acc' => $_SESSION['mem']]);
             foreach ($_SESSION['cart'] as $id => $qt) {
                 $buy = $Good->find($id);
         ?>
-                <tr>
-                    <td class="pp"><?= $buy['name'] ?></td>
-                    <td class="pp"><?= $buy['no'] ?></td>
-                    <td class="pp"><?= $qt ?></td>
-                    <td class="pp"><?= $buy['price'] ?></td>
-                    <td class="pp"><?= $buy['price'] * $qt ?></td>
-                </tr>
+        <tr>
+            <td class="pp"><?= $buy['name'] ?></td>
+            <td class="pp"><?= $buy['no'] ?></td>
+            <td class="pp"><?= $qt ?></td>
+            <td class="pp"><?= $buy['price'] ?></td>
+            <td class="pp"><?= $buy['price'] * $qt ?></td>
+        </tr>
         <?php
                 $total += ($buy['price'] * $qt);
             }
@@ -60,3 +60,8 @@ $mem = $Mem->find(['acc' => $_SESSION['mem']]);
         <input type="button" value="返回修改訂單" onclick="location.href='?do=buycart'">
     </div>
 </form>
+<script>
+$('input[type=submit]').on('click', () => {
+    alert("訂購成功，感謝訂購");
+})
+</script>
